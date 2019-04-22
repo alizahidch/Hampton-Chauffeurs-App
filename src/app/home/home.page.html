@@ -1,14 +1,78 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      Dashboard
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
+    <ion-slides autoplay="5000" loop="true" speed="3000" [options]="slideOpts" pager >
+        <ion-slide pager *ngFor="let slide of slides">
+          <img [src]="slide.imageUrl" alt="slide.title" >
+         
+          <!-- <img [src]="slide.imageUrl" > -->
+        </ion-slide>
+      </ion-slides>
+
+
+
   <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+    <ion-card class="first" (click)="visitBooking()">
+        <ion-card-header>
+           
+            <ion-card-title>BOOKINGS</ion-card-title>
+
+          </ion-card-header>
+        
+          <ion-card-content>
+           Book your next ride in few clicks
+          </ion-card-content>
+
+    </ion-card>
+    
+    <ion-card class="second">
+        <ion-card-header>
+           
+            <ion-card-title>CHAT</ion-card-title>
+           
+          </ion-card-header>
+        
+          <ion-card-content>
+           Share your concerns with our customer support
+          </ion-card-content>
+
+
+
+         
+    </ion-card>
+
+    <ion-card class="third">
+        <ion-card-header class="th">
+           
+            <ion-card-title >HISTORY</ion-card-title>
+           
+          </ion-card-header>
+        
+          <ion-card-content class="tc">
+           Manage your previous bookings
+          </ion-card-content>
+
+    </ion-card>
+
+
+    <ion-card class="fourth">
+        <ion-card-header >
+           
+            <ion-card-title >SETTINGS</ion-card-title>
+           
+          </ion-card-header>
+        
+          <ion-card-content style="color:white!important">
+          Manage your profile hassle free
+          </ion-card-content>
+
+    </ion-card>
+    
   </div>
 </ion-content>
