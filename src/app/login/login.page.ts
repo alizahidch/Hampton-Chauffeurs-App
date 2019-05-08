@@ -19,7 +19,7 @@ role;
 
 
 signupForm: FormGroup;
-  constructor( private router: NavController,private alertCtrl: AlertController, private loadingCtrl: LoadingController, private fb: FormBuilder) {
+  constructor( private router: NavController,private alertCtrl: AlertController,private afauth: AngularFireAuth, private db: AngularFireDatabase, private loadingCtrl: LoadingController, private fb: FormBuilder) {
     this.signupForm = fb.group({
       'full_name': [null, Validators.compose([Validators.required])],
       'phone_number': [null, Validators.compose([Validators.required])],
@@ -28,15 +28,52 @@ signupForm: FormGroup;
       'confirm_password': [null, Validators.compose([Validators.required, Validators.minLength(6)])]
     });
 
+this.email="user@gmail.com";
+this.password=123456;
+
    }
 
   ngOnInit() {
   }
+  login() {
+    // this.presentLoader();
+    this.afauth.auth.signInWithEmailAndPassword(this.email, this.password)
+      .then(data => {
+     
+        this.db.object('/users/' + data.user.uid).query.once("value").then(data => {
 
-login(){
-  this.router.navigateRoot('/home');
+          if (data.val().status == "active") {
+            window.localStorage.setItem("user_id", data.key);
+            window.localStorage.setItem("user_name", data.val().name);
+            window.localStorage.setItem("user_contact", data.val().contact);
+            window.localStorage.setItem("user_email", this.email);
+            window.localStorage.setItem("user_password", this.password);
+            this.router.navigateRoot('/home');
+          }
+          else if(data.val().status=="suspended"){
+            this.presentAlert("Account Suspended","Your account has been suspended by Admin");
+          }
 
-}
+
+        })
+      }, error => {
+        this.closeLoader();
+        if (error.code == "auth/user-not-found") {
+          this.presentAlert("User not found", "No user associated with the given email, please check again");
+        }
+        else {
+          this.presentAlert("Error", "Invalid login credentials");
+        }
+      })
+  }
+  async presentAlert(title, message) {
+    const alert = await this.alertCtrl.create({
+      header: title,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
 async presentLoader() {
   this.loading = await this.loadingCtrl.create({
