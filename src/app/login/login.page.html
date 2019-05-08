@@ -43,8 +43,8 @@
           </div>
         </div>
         <div class="sign-up-htm">
-          <div class="group">
-            <label for="user" class="label">Username</label>
+          <!-- <div class="group">
+            <label for="user" class="label">Name</label>
             <input id="user" type="text" class="input">
           </div>
           <div class="group">
@@ -60,10 +60,27 @@
             <input id="pass" type="text" class="input">
           </div>
           <div class="group">
-            <input type="submit" (click)="login()" class="button" value="Sign Up">
-          </div>
+            <input type="submit" (click)="signup()" class="button" value="Sign Up">
+          </div> -->
 
+          <form [formGroup]="signupForm" (ngSubmit)="signup()">
 
+            <div class="group">            <ion-input id="user" class="input" [formControl]="signupForm.controls['full_name']" placeholder="Your Name" type="text"></ion-input></div>
+
+          
+            <div class="group">   <ion-input id="user" class="input" [formControl]="signupForm.controls['phone_number']" placeholder="Your Mobile Number" type="text" pattern="[0-9]*"></ion-input> </div>
+            <div class="group">  <ion-input id="user" class="input" [formControl]="signupForm.controls['email_address']" placeholder="Your Email Address" type="email"></ion-input></div>
+            <p style="text-align:center;color:red;" text-center *ngIf="!signupForm.controls['email_address'].valid && signupForm.controls['email_address'].touched">Email address not valid</p>
+    
+            <div class="group">  <ion-input id="user" class="input" [formControl]="signupForm.controls['password']" placeholder="Your Password" type="password"></ion-input></div>
+            <p style="text-align:center;color:red;" text-center *ngIf="!signupForm.controls['password'].valid && signupForm.controls['password'].touched">Password length must be 6 characters</p>
+    
+            <div class="group"> <ion-input id="user" class="input" [formControl]="signupForm.controls['confirm_password']" placeholder="Confirm Password" type="password"></ion-input></div>
+    
+            <p style="text-align:center;color:red;margin-bottom:0px;" text-center *ngIf="signupForm.controls['confirm_password'].touched && signupForm.controls['password'].value != signupForm.controls['confirm_password'].value">Password & Confirm Password doesn't match</p>
+    
+            <div class="group">  <ion-button type="submit" [disabled]="!signupForm.valid || signupForm.controls['password'].value != signupForm.controls['confirm_password'].value" expand="block" class="button">Register</ion-button></div>
+          </form>
           <!-- <div class="hr"></div> -->
        
         </div>
