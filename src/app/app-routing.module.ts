@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'booking', loadChildren: './booking/booking.module#BookingPageModule' },
   { path: 'rideragreement', loadChildren: './rideragreement/rideragreement.module#RideragreementPageModule' },
   { path: 'rideragreement/:full_name/:phone_number/:email_address/:password', loadChildren: './rideragreement/rideragreement.module#RideragreementPageModule' },
+  { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
 
 ];
 
