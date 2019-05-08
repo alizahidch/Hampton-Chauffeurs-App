@@ -32,5 +32,9 @@ visitBooking(){
 }
 
 
+visitSetting(){
+  this.router.navigateForward('/settings');
+}
+
 
 }
