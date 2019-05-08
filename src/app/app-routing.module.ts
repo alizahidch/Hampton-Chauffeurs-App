@@ -8,6 +8,9 @@ const routes: Routes = [
   { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
   { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardPageModule' },
   { path: 'booking', loadChildren: './booking/booking.module#BookingPageModule' },
+  { path: 'rideragreement', loadChildren: './rideragreement/rideragreement.module#RideragreementPageModule' },
+  { path: 'rideragreement/:full_name/:phone_number/:email_address/:password', loadChildren: './rideragreement/rideragreement.module#RideragreementPageModule' },
+
 ];
 
 @NgModule({

@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-toolbar class="header-bg">
+      <ion-row>
+        <ion-col class="no-padding" size="2" style="padding-left:5px;" text-left align-self-center>
+          <ion-icon (click)="goBack()" name="arrow-round-back" size="large"></ion-icon>
+        </ion-col>
+        <ion-col class="no-padding" size="8" text-center>
+          <p class="no-margin" style="margin-top: 9px;">
+            User Agreement
+          </p>
+        </ion-col>
+        <ion-col class="no-padding" size="2"></ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <p padding class="terms no-margin" [innerHTML]="terms"></p>
+    <div padding>
+      <div padding>
+        <ion-button expand="block" (click)="signup()">I Accept</ion-button>
+      </div>
+    </div>
+  </ion-content>
