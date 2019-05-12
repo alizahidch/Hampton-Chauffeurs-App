@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-booking',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookingPage implements OnInit {
 
-  constructor() { }
+  constructor(private router:NavController) { }
 
   ngOnInit() {
+  }
+
+  hourly(){
+    this.router.navigateForward('/hourly');
   }
 
 }
