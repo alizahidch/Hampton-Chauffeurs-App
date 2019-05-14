@@ -24,7 +24,19 @@
       <ion-input placeholder="from:address,airport,hotel" type="text" formControlName="from"></ion-input>
     </ion-item>
 <hr>
+
 <ion-item>
+<ion-card  style='width: 400px; height: 300px;'>
+    <div class="noScroll">
+        <div id="map"  style='width: 400px; height: 300px;'></div>
+      </div>
+</ion-card>
+
+
+</ion-item>
+<hr>
+<ion-item>
+
     <ion-icon name="time"></ion-icon>
 
 
@@ -69,6 +81,11 @@
 
 
   </form>
+  
+  
+
+ 
+
   <ion-button (click)="BookNow()" type="submit" [disabled]="!todo.valid" color="dark">
       GO
     </ion-button>
