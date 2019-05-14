@@ -25,3 +25,12 @@
 .toolbar-background {
     background-color: blue !important;
   }
+
+  .noScroll {
+    overflow: hidden;
+    }
+    
+    #map {
+    height: 100%;
+    width: 100%;
+    }
