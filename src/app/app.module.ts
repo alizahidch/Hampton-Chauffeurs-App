@@ -19,6 +19,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from 'src/environments/environment';
 const firebaseConfig = {
   apiKey: "AIzaSyAFaAEdFIiN4rg32ailrjTQi25qB0u_PHI",
   authDomain: "hampton-chaffeurs.firebaseapp.com",
@@ -28,6 +29,9 @@ const firebaseConfig = {
   messagingSenderId: "660237080040",
   appId: "1:660237080040:web:ec9c1f6c58d1e5d5"
 };
+
+
+
 
 @NgModule({
   declarations: [AppComponent],
