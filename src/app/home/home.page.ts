@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController ,ModalController} from '@ionic/angular';
+
+
+import { TestpagePage } from '../test/testpage/testpage.page';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +11,7 @@ import { NavController } from '@ionic/angular';
 })
 export class HomePage {
 
-  constructor( private router: NavController) { }
+  constructor( private router: NavController,public modalCtrl: ModalController) { }
 
   ngOnInit() {
   }
@@ -31,6 +34,9 @@ visitBooking(){
   this.router.navigateForward('/booking');
 }
 
+visitTest(){
+  this.router.navigateForward('/testpage');
+}
 
 visitSetting(){
   this.router.navigateForward('/settings');
