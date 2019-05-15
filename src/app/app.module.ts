@@ -20,6 +20,12 @@ import * as firebase from 'firebase';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
+
+import { ConnectivityServiceService } from './services/connectivity-service.service';
+import { GoogleMapsService } from './services/google-maps.service';
+import { Network } from '@ionic-native/network/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 const firebaseConfig = {
   apiKey: "AIzaSyAFaAEdFIiN4rg32ailrjTQi25qB0u_PHI",
   authDomain: "hampton-chaffeurs.firebaseapp.com",
@@ -40,6 +46,10 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),AngularFireAuthModule,MatCardModule],
   providers: [
     StatusBar,
+    ConnectivityServiceService,
+    GoogleMapsService,
+    Network,
+    Geolocation,
     AuthenticationService,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
