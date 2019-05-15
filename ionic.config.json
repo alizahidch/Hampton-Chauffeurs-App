@@ -1,5 +1,7 @@
 {
   "name": "hcappbeta",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
