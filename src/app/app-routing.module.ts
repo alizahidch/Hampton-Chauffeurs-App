@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'hourly', loadChildren: './booking/hourly/hourly.module#HourlyPageModule' },
   { path: 'oneway', loadChildren: './booking/oneway/oneway.module#OnewayPageModule' },
   { path: 'currentbookings', loadChildren: './booking/currentbookings/currentbookings.module#CurrentbookingsPageModule' },
+  { path: 'testpage', loadChildren: './test/testpage/testpage.module#TestpagePageModule' },
 
 ];
 
