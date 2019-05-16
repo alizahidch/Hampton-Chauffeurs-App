@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild ,ElementRef} from '@angular/core';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NavController,AlertController } from '@ionic/angular';
 import * as mapboxgl from 'mapbox-gl';
+
 import { environment } from 'src/environments/environment';
+
+
+var MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
 @Component({
   selector: 'app-hourly',
@@ -13,7 +17,10 @@ export class HourlyPage implements OnInit {
 
 //Map settings
 map: mapboxgl.Map;
-geocodingClient:mapboxgl.MapboxGeocoder;
+@ViewChild('map') mapInput:any;
+
+
+geocodingClient=mapboxgl.places;
 style = 'mapbox://styles/mapbox/outdoors-v9';
 lat = 40.963432;
 lng = -72.184799;
@@ -54,7 +61,8 @@ classes=[
   ngOnInit() {
   
     this.buildMap();
-    this.searchMap();
+    console.log(this.mapInput.config)
+    // this.searchMap();
   }
   
 
@@ -62,16 +70,28 @@ classes=[
     mapboxgl.accessToken= 'pk.eyJ1IjoiYWxpemFoaWRjaCIsImEiOiJjanZvNzJvdGcxcTMzM3ptbDd5b2F5N3l2In0.Z1g7_CVa4-Nld_m4jBFsYw';
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: this.style,
+      // style: this.style,
+      style: 'mapbox://styles/mapbox/streets-v11',
       zoom: 13,
       center: [this.lng, this.lat]
     });
-    console.log(this.map)
-  }
 
-  searchMap(){
-  console.log(this.geocodingClient)
-    this.geocodingClient.forwardGeocode({
+    this.map.addControl(new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      query: 'Paris, France',
+      limit: 2
+      }));
+    console.log(this.map)
+
+    var geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl
+      });
+
+   
+
+   geocoder.forwardGeocode({
       query: 'Paris, France',
       limit: 2
     })
@@ -80,6 +100,12 @@ classes=[
         const match = response.body;
         console.log(match)
       });
+
+  }
+
+  searchMap(){
+   
+   
   }
 
   logForm(){
