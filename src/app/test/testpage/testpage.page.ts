@@ -30,76 +30,76 @@ export class TestpagePage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewDidLoad(): void {
+//   ionViewDidLoad(): void {
 
-    let mapLoaded = this.maps.init(this.mapElement.nativeElement, this.pleaseConnect.nativeElement).then(() => {
+//     let mapLoaded = this.maps.init(this.mapElement.nativeElement, this.pleaseConnect.nativeElement).then(() => {
 
-        this.autocompleteService = new google.maps.places.AutocompleteService();
-        this.placesService = new google.maps.places.PlacesService(this.maps.map);
-        this.searchDisabled = false;
+//         this.autocompleteService = new google.maps.places.AutocompleteService();
+//         this.placesService = new google.maps.places.PlacesService(this.maps.map);
+//         this.searchDisabled = false;
 
-    }); 
+//     }); 
 
-}
+// }
 
-selectPlace(place){
+// selectPlace(place){
 
-  this.places = [];
+//   this.places = [];
 
-  let location = {
-      lat: null,
-      lng: null,
-      name: place.name
-  };
+//   let location = {
+//       lat: null,
+//       lng: null,
+//       name: place.name
+//   };
 
-  this.placesService.getDetails({placeId: place.place_id}, (details) => {
+//   this.placesService.getDetails({placeId: place.place_id}, (details) => {
 
-      this.zone.run(() => {
+//       this.zone.run(() => {
 
-          location.name = details.name;
-          location.lat = details.geometry.location.lat();
-          location.lng = details.geometry.location.lng();
-          this.saveDisabled = false;
+//           location.name = details.name;
+//           location.lat = details.geometry.location.lat();
+//           location.lng = details.geometry.location.lng();
+//           this.saveDisabled = false;
 
-          this.maps.map.setCenter({lat: location.lat, lng: location.lng}); 
+//           this.maps.map.setCenter({lat: location.lat, lng: location.lng}); 
 
-          this.location = location;
+//           this.location = location;
 
-      });
+//       });
 
-  });
+//   });
 
-}
+// }
 
-searchPlace(){
+// searchPlace(){
 
-  this.saveDisabled = true;
+//   this.saveDisabled = true;
 
-  if(this.query.length > 0 && !this.searchDisabled) {
+//   if(this.query.length > 0 && !this.searchDisabled) {
 
-      let config = {
-          types: ['geocode'],
-          input: this.query
-      }
+//       let config = {
+//           types: ['geocode'],
+//           input: this.query
+//       }
 
-      this.autocompleteService.getPlacePredictions(config, (predictions, status) => {
+//       this.autocompleteService.getPlacePredictions(config, (predictions, status) => {
 
-          if(status == google.maps.places.PlacesServiceStatus.OK && predictions){
+//           if(status == google.maps.places.PlacesServiceStatus.OK && predictions){
 
-              this.places = [];
+//               this.places = [];
 
-              predictions.forEach((prediction) => {
-                  this.places.push(prediction);
-              });
-          }
+//               predictions.forEach((prediction) => {
+//                   this.places.push(prediction);
+//               });
+//           }
 
-      });
+//       });
 
-  } else {
-      this.places = [];
-  }
+//   } else {
+//       this.places = [];
+//   }
 
-}
+// }
 
 save(){
   // this.viewCtrl.dismiss(this.location);
