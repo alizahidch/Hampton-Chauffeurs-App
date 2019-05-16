@@ -16,139 +16,136 @@ export class GoogleMapsService {
   apiKey: string = "AIzaSyBwRdPI6LNaEjBcG8WwcdiXjy0CuAzZdZg";
 
   constructor(public connectivityService: ConnectivityServiceService, public geolocation: Geolocation) { }
-  init(mapElement: any, pleaseConnect: any): Promise<any> {
+  // init(mapElement: any, pleaseConnect: any): Promise<any> {
 
-    this.mapElement = mapElement;
-    this.pleaseConnect = pleaseConnect;
+  //   this.mapElement = mapElement;
+  //   this.pleaseConnect = pleaseConnect;
 
-    return this.loadGoogleMaps();
+  //   return this.loadGoogleMaps();
 
-  }
-
-
-  loadGoogleMaps(): Promise<any> {
-
-    return new Promise((resolve) => {
-
-      if(typeof google == "undefined" || typeof google.maps == "undefined"){
-
-        console.log("Google maps JavaScript needs to be loaded.");
-        this.disableMap();
-
-        if(this.connectivityService.isOnline()){
-
-          window['mapInit'] = () => {
-
-            this.initMap().then(() => {
-              resolve(true);
-            });
-
-            this.enableMap();
-          }
-
-          let script = document.createElement("script");
-          script.id = "googleMaps";
-
-          if(this.apiKey){
-            script.src = 'http://maps.google.com/maps/api/js?key=' + this.apiKey + '&callback=mapInit&libraries=places';
-          } else {
-            script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';       
-          }
-
-          document.body.appendChild(script);  
-
-        } 
-      } else {
-
-        if(this.connectivityService.isOnline()){
-          this.initMap();
-          this.enableMap();
-        }
-        else {
-          this.disableMap();
-        }
-
-        resolve(true);
-
-      }
-
-      this.addConnectivityListeners();
-
-    });
-
-  }
+  // }
 
 
-  initMap(): Promise<any> {
+  // loadGoogleMaps(): Promise<any> {
 
-    this.mapInitialised = true;
+  //   return new Promise((resolve) => {
 
-    return new Promise((resolve) => {
+  //     if(typeof google == "undefined" || typeof google.maps == "undefined"){
 
-      this.geolocation.getCurrentPosition().then((position) => {
+  //       console.log("Google maps JavaScript needs to be loaded.");
+  //       this.disableMap();
 
-        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  //       if(this.connectivityService.isOnline()){
 
-        let mapOptions = {
-          center: latLng,
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
+  //         window['mapInit'] = () => {
 
-        this.map = new google.maps.Map(this.mapElement, mapOptions);
-        resolve(true);
+  //           this.initMap().then(() => {
+  //             resolve(true);
+  //           });
 
-      });
+  //           this.enableMap();
+  //         }
 
-    });
+  //         let script = document.createElement("script");
+  //         script.id = "googleMaps";
 
-  }
+  //         if(this.apiKey){
+  //           script.src = 'http://maps.google.com/maps/api/js?key=' + this.apiKey + '&callback=mapInit&libraries=places';
+  //         } else {
+  //           script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';       
+  //         }
 
-  disableMap(): void {
+  //         document.body.appendChild(script);  
 
-    if(this.pleaseConnect){
-      this.pleaseConnect.style.display = "block";
-    }
+  //       } 
+  //     } else {
 
-  }
+  //       if(this.connectivityService.isOnline()){
+  //         this.initMap();
+  //         this.enableMap();
+  //       }
+  //       else {
+  //         this.disableMap();
+  //       }
 
-  enableMap(): void {
+  //       resolve(true);
 
-    if(this.pleaseConnect){
-      this.pleaseConnect.style.display = "none";
-    }
+  //     }
 
-  }
+  //     this.addConnectivityListeners();
 
-  addConnectivityListeners(): void {
+  //   });
 
-    this.connectivityService.watchOnline().subscribe(() => {
-
-      setTimeout(() => {
-
-        if(typeof google == "undefined" || typeof google.maps == "undefined"){
-          this.loadGoogleMaps();
-        } 
-        else {
-          if(!this.mapInitialised){
-            this.initMap();
-          }
-
-          this.enableMap();
-        }
-
-      }, 2000);
-
-    });
-
-    this.connectivityService.watchOffline().subscribe(() => {
-
-      this.disableMap();
-
-    });
-
-  }
+  // }
 
 
+  // initMap(): Promise<any> {
 
+  //   this.mapInitialised = true;
+
+  //   return new Promise((resolve) => {
+
+  //     this.geolocation.getCurrentPosition().then((position) => {
+
+  //       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+  //       let mapOptions = {
+  //         center: latLng,
+  //         zoom: 15,
+  //         mapTypeId: google.maps.MapTypeId.ROADMAP
+  //       }
+
+  //       this.map = new google.maps.Map(this.mapElement, mapOptions);
+  //       resolve(true);
+
+  //     });
+
+  //   });
+
+  // }
+
+  // disableMap(): void {
+
+  //   if(this.pleaseConnect){
+  //     this.pleaseConnect.style.display = "block";
+  //   }
+
+  // }
+
+  // enableMap(): void {
+
+  //   if(this.pleaseConnect){
+  //     this.pleaseConnect.style.display = "none";
+  //   }
+
+  // }
+
+  // addConnectivityListeners(): void {
+
+  //   this.connectivityService.watchOnline().subscribe(() => {
+
+  //     setTimeout(() => {
+
+  //       if(typeof google == "undefined" || typeof google.maps == "undefined"){
+  //         this.loadGoogleMaps();
+  //       } 
+  //       else {
+  //         if(!this.mapInitialised){
+  //           this.initMap();
+  //         }
+
+  //         this.enableMap();
+  //       }
+
+  //     }, 2000);
+
+  //   });
+
+  //   this.connectivityService.watchOffline().subscribe(() => {
+
+  //     this.disableMap();
+
+  //   });
+
+  // }
 }
