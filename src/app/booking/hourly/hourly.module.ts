@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { HourlyPage } from './hourly.page';
+import { AgmCoreModule } from '@agm/core';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAYCDvDJYdHYAArV3XBlKTkDoyY4UHARTQ",
+      libraries: ["places"]
+  }),
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
