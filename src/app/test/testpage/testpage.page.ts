@@ -1,112 +1,83 @@
-import { NavController, Platform } from '@ionic/angular';
-import { Component, ElementRef, ViewChild, NgZone ,OnInit} from '@angular/core';
+import { Component, ViewChild, ElementRef,OnInit } from '@angular/core';
+ 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { GoogleMapsService } from '../../services/google-maps.service';
-import { ViewController } from '@ionic/core';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+ 
+declare var google;
+ 
+
+
 @Component({
   selector: 'app-testpage',
   templateUrl: './testpage.page.html',
   styleUrls: ['./testpage.page.scss'],
 })
 export class TestpagePage implements OnInit {
+  
   @ViewChild('map') mapElement: ElementRef;
-  @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
+  map: any;
+  address:string;
 
-  latitude: number;
-  longitude: number;
-  autocompleteService: any;
-  placesService: any;
-  query: string = '';
-  places: any = [];
-  searchDisabled: boolean;
-  saveDisabled: boolean;
-  location: any; 
+  constructor(
+    private geolocation: Geolocation,
+    private nativeGeocoder: NativeGeocoder
+  ) { 
+    
 
-  constructor(public navCtrl: NavController, public zone: NgZone, public maps: GoogleMapsService, public platform: Platform, public geolocation: Geolocation, public viewCtrl: ViewController) { 
-    this.searchDisabled = true;
-    this.saveDisabled = true;
   }
 
   ngOnInit() {
+    this.loadMap();
   }
 
-//   ionViewDidLoad(): void {
-
-//     let mapLoaded = this.maps.init(this.mapElement.nativeElement, this.pleaseConnect.nativeElement).then(() => {
-
-//         this.autocompleteService = new google.maps.places.AutocompleteService();
-//         this.placesService = new google.maps.places.PlacesService(this.maps.map);
-//         this.searchDisabled = false;
-
-//     }); 
-
-// }
-
-// selectPlace(place){
-
-//   this.places = [];
-
-//   let location = {
-//       lat: null,
-//       lng: null,
-//       name: place.name
-//   };
-
-//   this.placesService.getDetails({placeId: place.place_id}, (details) => {
-
-//       this.zone.run(() => {
-
-//           location.name = details.name;
-//           location.lat = details.geometry.location.lat();
-//           location.lng = details.geometry.location.lng();
-//           this.saveDisabled = false;
-
-//           this.maps.map.setCenter({lat: location.lat, lng: location.lng}); 
-
-//           this.location = location;
-
-//       });
-
-//   });
-
-// }
-
-// searchPlace(){
-
-//   this.saveDisabled = true;
-
-//   if(this.query.length > 0 && !this.searchDisabled) {
-
-//       let config = {
-//           types: ['geocode'],
-//           input: this.query
-//       }
-
-//       this.autocompleteService.getPlacePredictions(config, (predictions, status) => {
-
-//           if(status == google.maps.places.PlacesServiceStatus.OK && predictions){
-
-//               this.places = [];
-
-//               predictions.forEach((prediction) => {
-//                   this.places.push(prediction);
-//               });
-//           }
-
-//       });
-
-//   } else {
-//       this.places = [];
-//   }
-
-// }
-
-save(){
-  // this.viewCtrl.dismiss(this.location);
-}
-
-close(){
-  // this.viewCtrl.dismiss();
-}   
+  loadMap() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+      let mapOptions = {
+        center: latLng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+ 
+      this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude);
+ 
+      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+ 
+      this.map.addListener('tilesloaded', () => {
+        console.log('accuracy',this.map);
+        this.getAddressFromCoords(this.map.center.lat(), this.map.center.lng())
+      });
+ 
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+ 
+  getAddressFromCoords(lattitude, longitude) {
+    console.log("getAddressFromCoords "+lattitude+" "+longitude);
+    let options: NativeGeocoderOptions = {
+      useLocale: true,
+      maxResults: 5
+    };
+ 
+    this.nativeGeocoder.reverseGeocode(lattitude, longitude, options)
+      .then((result: NativeGeocoderReverseResult[]) => {
+        this.address = "";
+        let responseAddress = [];
+        for (let [key, value] of Object.entries(result[0])) {
+          if(value.length>0)
+          responseAddress.push(value);
+ 
+        }
+        responseAddress.reverse();
+        for (let value of responseAddress) {
+          this.address += value+", ";
+        }
+        this.address = this.address.slice(0, -2);
+      })
+      .catch((error: any) =>{ 
+        this.address = "Address Not Available!";
+      });
+    }
 
 }
