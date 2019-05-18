@@ -26,6 +26,10 @@ import { GoogleMapsService } from './services/google-maps.service';
 import { Network } from '@ionic-native/network/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { AgmCoreModule } from '@agm/core';
+
 const firebaseConfig = {
   apiKey: "AIzaSyAFaAEdFIiN4rg32ailrjTQi25qB0u_PHI",
   authDomain: "hampton-chaffeurs.firebaseapp.com",
@@ -42,7 +46,10 @@ const firebaseConfig = {
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AngularFireDatabaseModule,AppRoutingModule,BrowserAnimationsModule, MatButtonModule, MatCheckboxModule,
+  imports: [BrowserModule, IonicModule.forRoot(), AgmCoreModule.forRoot({
+    apiKey: "AIzaSyAYCDvDJYdHYAArV3XBlKTkDoyY4UHARTQ",
+    libraries: ["places"]
+}),AngularFireDatabaseModule,AppRoutingModule,BrowserAnimationsModule, MatButtonModule, MatCheckboxModule,
     AngularFireModule.initializeApp(firebaseConfig),AngularFireAuthModule,MatCardModule],
   providers: [
     StatusBar,
@@ -50,6 +57,7 @@ const firebaseConfig = {
     GoogleMapsService,
     Network,
     Geolocation,
+    NativeGeocoder,
     AuthenticationService,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
