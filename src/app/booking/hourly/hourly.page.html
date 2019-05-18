@@ -18,18 +18,27 @@
 <ion-content padding>
   
   <form style="border: 1px" [formGroup]="todo" (ngSubmit)="logForm()">
-    <ion-item>
+  <ion-item>
         <ion-icon name="pin"></ion-icon>
  
-      <ion-input placeholder="from:address,airport,hotel" type="text" formControlName="from"></ion-input>
+      <input  #searchTextField id="txtHome" formControlName="from" placeholder="from:address,airport,hotel" type="text" >
     </ion-item>
+
+    
+   
+ 
+ 
+ 
 <hr>
 
 <ion-item>
 <ion-card  style='width: 400px; height: 300px;'>
-    <div class="noScroll">
+  <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+    <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+  </agm-map>
+    <!-- <div class="noScroll">
         <div id="map"  style='width: 400px; height: 300px;' #map></div>
-      </div>
+      </div> -->
 </ion-card>
 
 
