@@ -17,8 +17,9 @@ import { AuthenticationService } from './services/authentication.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
  
 import * as firebase from 'firebase';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireDatabaseModule } from "angularfire2/database";;
 import { environment } from 'src/environments/environment';
 
 import { ConnectivityServiceService } from './services/connectivity-service.service';
@@ -26,7 +27,7 @@ import { GoogleMapsService } from './services/google-maps.service';
 import { Network } from '@ionic-native/network/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
-
+import {ApiService} from './services/api.service'
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { AgmCoreModule } from '@agm/core';
 
@@ -59,6 +60,7 @@ const firebaseConfig = {
     Geolocation,
     NativeGeocoder,
     AuthenticationService,
+    ApiService,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
