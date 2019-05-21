@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController ,ModalController} from '@ionic/angular';
-
+import {ApiService} from '../services/api.service'
 
 import { TestpagePage } from '../test/testpage/testpage.page';
 
@@ -11,9 +11,10 @@ import { TestpagePage } from '../test/testpage/testpage.page';
 })
 export class HomePage {
 
-  constructor( private router: NavController,public modalCtrl: ModalController) { }
+  constructor( private router: NavController,public modalCtrl: ModalController,private api:ApiService) { }
 
   ngOnInit() {
+    console.log(this.api.userid)
   }
 
   slides=[
