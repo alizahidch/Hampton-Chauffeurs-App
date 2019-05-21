@@ -5,9 +5,8 @@ import * as mapboxgl from 'mapbox-gl';
 import {FormControl} from "@angular/forms";
 // import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
-
-import { environment } from 'src/environments/environment';
-
+import {ApiService} from '../../services/api.service'
+import { ToastController } from '@ionic/angular';
 
 // var MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
@@ -23,6 +22,7 @@ address;
   public longitude: number;
   public searchControl: FormControl;
   public zoom: number;
+  userid;
   fromLocation;
 
   @ViewChild("search")
@@ -67,13 +67,15 @@ classes=[
 
 
   constructor(private formBuilder: FormBuilder,private router:NavController,public alertController: AlertController, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) { 
+    private ngZone: NgZone,private api:ApiService,public toastController: ToastController) { 
+      this.userid=this.api.userid;
     this.todo = this.formBuilder.group({
       from: ['', Validators.required],
       duration: [''],
       date:[''],
       time:[''],
-     class:['']
+     class:[''],
+     instructions:['']
     });
 
     this.zoom = 4;
@@ -131,7 +133,19 @@ classes=[
     // console.log(this.mapInput.config)
     // this.searchMap();
   }
-  
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your booking request has been sent.',
+      duration: 3000,
+      color:"success",
+      animated:true
+
+    });
+    toast.present();
+    
+
+  }
+
   private setCurrentPosition() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -197,7 +211,7 @@ classes=[
     let cl=cls;
     let dt=dat;
     let h=hr;
-
+let uid=this.userid;
     let msg='Dear Customer your trip details are below <br> <hr> Bill :<strong>'+bl+'</strong>$'+'<br> <hr> Class:'+cls+'<br> <hr> Date:'+dat+'<br> <hr> Duration:'+hr+'hours <br> <hr> ' +'<br> <hr> Location:'+this.fromLocation+'<br> <hr> Lat:'+lat+'<br> <hr> Lon:'+lon;
     const alert = await this.alertController.create({
       header: 'Booking Request!',
@@ -209,11 +223,35 @@ classes=[
           cssClass: 'secondary',
           handler: (blah) => {
             console.log('Confirm Cancel: blah');
+            this.classes=[
+            {name:"Business", isChecked: false},
+{name:"Economy", isChecked: false}];
+this.economyBill=0;
+this.businessBill=0;
+this.totalBill=0
           }
         }, {
           text: 'Okay',
           handler: () => {
             console.log('Confirm Okay');
+            let booking={
+              'bookedby':uid,
+              'type':'hourly',
+              'estimated-fare':bill,
+              'pickup':this.fromLocation,
+              'pickup-coords':lat+','+lon,
+              'status':'pending',
+              'class':cls,
+              'date':dat,
+              'duration':hr,
+              'instructions':this.todo.value.instructions
+
+            }
+            this.api.hourlyBooking(booking).then(res=>{
+              console.log(res)
+              this.presentToast();
+              this.router.navigateBack('/booking');
+            })
           }
         }
       ]
