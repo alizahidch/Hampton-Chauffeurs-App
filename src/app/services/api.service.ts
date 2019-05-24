@@ -17,4 +17,20 @@ return this.db.list('/bookings').push(booking);
 
 }
 
+oneWayBooking(booking:any){
+  console.log(booking);
+let bookingref:'/bookings';
+return this.db.list('/bookings').push(booking);
+
+}
+
+getBookings(){
+  return this.db.list('/bookings').
+}
+
+
+
+
+
+
 }
