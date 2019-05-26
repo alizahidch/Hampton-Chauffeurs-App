@@ -17,6 +17,11 @@ export class BookingPage implements OnInit {
     this.router.navigateForward('/hourly');
   }
 
+  oneway(){
+    this.router.navigateForward('/oneway');
+    
+  }
+
   GoBack(){
     this.router.navigateBack('/home');
     
