@@ -248,7 +248,8 @@ this.totalBill=0
 
             }
             this.api.hourlyBooking(booking).then(res=>{
-              console.log(res)
+             let bid=res.key;
+             this.api.userUpdate(bid);
               this.presentToast();
               this.router.navigateBack('/booking');
             })
