@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule ,ReactiveFormsModule} from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { OnewayPage } from './oneway.page';
-
+import { AgmCoreModule } from '@agm/core';
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +19,11 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAYCDvDJYdHYAArV3XBlKTkDoyY4UHARTQ",
+      libraries: ["places","geometry"]
+  }),
+    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [OnewayPage]
