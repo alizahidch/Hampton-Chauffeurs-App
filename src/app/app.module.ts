@@ -49,7 +49,7 @@ const firebaseConfig = {
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AgmCoreModule.forRoot({
     apiKey: "AIzaSyAYCDvDJYdHYAArV3XBlKTkDoyY4UHARTQ",
-    libraries: ["places"]
+    libraries: ["places","geometry"]
 }),AngularFireDatabaseModule,AppRoutingModule,BrowserAnimationsModule, MatButtonModule, MatCheckboxModule,
     AngularFireModule.initializeApp(firebaseConfig),AngularFireAuthModule,MatCardModule],
   providers: [
