@@ -7,7 +7,7 @@ import {FormControl} from "@angular/forms";
 import { MapsAPILoader } from '@agm/core';
 import {ApiService} from '../../services/api.service'
 import { ToastController } from '@ionic/angular';
-
+declare var google: any;
 // var MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
 @Component({
@@ -16,6 +16,9 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./hourly.page.scss'],
 })
 export class HourlyPage implements OnInit {
+
+
+  
 address;
 
   public latitude: number;
@@ -78,15 +81,15 @@ classes=[
      instructions:['']
     });
 
-    this.zoom = 4;
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
+    // this.zoom = 4;
+    // this.latitude = 39.8282;
+    // this.longitude = -98.5795;
 
-    //create search FormControl
-    this.searchControl = new FormControl();
+    // //create search FormControl
+    // this.searchControl = new FormControl();
 
-    //set current position
-    this.setCurrentPosition();
+    // //set current position
+    // this.setCurrentPosition();
   }
 
   ngOnInit() {
