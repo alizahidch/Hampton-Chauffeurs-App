@@ -27,17 +27,30 @@ public tolatitude: number;
 public tolongitude: number;
 public searchControl: FormControl;
 public zoom: number;
+public miles:number;
+economyBill:any=0;
+businessBill:any=0;
+totalBill:any=0;
+economyRate:any=60;
+businessRate:any=110;
 userid;
 fromLocation;
+toLocation;
   @ViewChild('from') fromAdress : ElementRef;
 
   @ViewChild('to') toAdress : ElementRef;
 
   private todo : FormGroup;
   myTime: String = new Date().toTimeString();
+
+
+classes=[
+  {name:"Business", isChecked: false},
+{name:"Economy", isChecked: false},
+]
   constructor(private router:NavController,private formBuilder: FormBuilder,public alertController: AlertController,private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,private api:ApiService,public toastController: ToastController) {
-
+this.userid=this.api.userid;
     this.todo = this.formBuilder.group({
       from: ['', Validators.required],
   to:['', Validators.required],
@@ -126,7 +139,7 @@ fromLocation;
           this.longitude = place.geometry.location.lng();
           console.log(this.longitude);
           console.log(this.latitude);
-          this.fromLocation=place.formatted_address;
+          this.toLocation=place.formatted_address;
           this.zoom = 12;
       });
   });
@@ -142,20 +155,122 @@ fromLocation;
         });
     }
 }
+
 onDrag(){
   console.log("Drag ended")
 }
 
+async presentAlertConfirm(bill,cls,dat,ml,loc,lat,lon) {
+  let bl=bill;
+  let cl=cls;
+  let dt=dat;
+  let m=ml;
+let uid=this.userid;
+  let msg='Dear Customer your trip details are below <br> <hr> Bill :<strong>'+bl+'</strong>$'+'<br> <hr> Class:'+cls+'<br> <hr> Date:'+dat+'<br> <hr> Mileage:'+ml+'hours <br> <hr> ' +'<br> <hr> Location:'+this.fromLocation+'<br> <hr To:>'+this.toLocation+'<br> <hr> Lat:'+lat+'<br> <hr> Lon:'+lon;
+  const alert = await this.alertController.create({
+    header: 'Booking Request!',
+    message: msg,
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          console.log('Confirm Cancel: blah');
+          this.classes=[
+          {name:"Business", isChecked: false},
+{name:"Economy", isChecked: false}];
+this.economyBill=0;
+this.businessBill=0;
+this.totalBill=0
+        }
+      }, {
+        text: 'Okay',
+        handler: () => {
+          console.log('Confirm Okay');
+          let booking={
+            'bookedby':uid,
+            'type':'oneway',
+            'estimated-fare':bill,
+            'pickup':this.toLocation,
+            'pickup-coords':lat+','+lon,
+            'status':'pending',
+            'class':cls,
+            'date':dat,
+            'mileage':ml,
+            'instructions':this.todo.value.instructions
+
+          }
+          this.api.oneWayBooking(booking).then(res=>{
+           let bid=res.key;
+           this.api.userUpdate(bid);
+            this.presentToast();
+            this.router.navigateBack('/booking');
+          })
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+async presentToast() {
+  const toast = await this.toastController.create({
+    message: 'Your booking request has been sent.',
+    duration: 3000,
+    color:"success",
+    animated:true
+
+  });
+  toast.present();
+  
+
+}
+
+
+
+
+
+
+
+ 
 BookNow()
 {
   this.calculateDistance();
+  this.fromLocation;
+  this.classes=this.classes.filter(res=>{
+ 
+    return res.isChecked;
+  })
+  this.classes.forEach(element=>{
+  this.todo.value.class=element.name
+  })
+  if(this.todo.value.class=="Economy"){
+this.economyBill=this.economyRate*this.miles;
+
+  }
+  else
+  {
+    this.businessBill=this.businessRate*this.miles
+
+  }
+
+
+  this.totalBill=this.businessBill+this.economyBill
+  console.log(this.totalBill)
+
+  this.presentAlertConfirm(this.totalBill,this.todo.value.class,this.todo.value.date,this.miles,this.todo.value.from,this.latitude,this.longitude)
+
 }
 calculateDistance() {
   console.log("Distance function started")
   const start = new google.maps.LatLng(this.latitude, this.longitude);
   const end = new google.maps.LatLng(this.tolatitude, this.tolongitude);
   const distance = google.maps.geometry.spherical.computeDistanceBetween(start, end);
-  console.log(distance/1000);
+ 
+  this.miles=distance/1000;
 }
   GoBack(){
     this.router.navigateBack('/booking');
