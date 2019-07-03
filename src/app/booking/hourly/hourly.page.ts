@@ -28,6 +28,7 @@ address;
   userid;
   fromLocation;
 
+ 
   @ViewChild("search")
   public searchElementRef;
 
@@ -131,7 +132,7 @@ classes=[
               });
           });
       });
-  
+      
     // this.buildMap();
     // console.log(this.mapInput.config)
     // this.searchMap();
